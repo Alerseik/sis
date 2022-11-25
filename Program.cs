@@ -1,81 +1,46 @@
 ﻿using System;
+using System.Globalization;
 
-namespace ConsoleApp5
+namespace Дата_время
 {
     class Program
     {
-        static void POP1(int[] intArray)
-        {
-            int indx;
-            for (int i = 0; i < intArray.Length; i++)
-            {
-                indx = i;
-                for (int j = i; j < intArray.Length; j++)
-                {
-                    if (intArray[j] < intArray[indx])
-                    {
-                        indx = j;
-                    }
-                }
-                if (intArray[indx] == intArray[i])
-                    continue;
-                int temp = intArray[i];
-                intArray[i] = intArray[indx];
-                intArray[indx] = temp;
-            }
-        }
-        static void SIS1(int[] intArray)
-        {
-            int indx;
-            for (int i = 0; i < intArray.Length; i++)
-            {
-                indx = i;
-                for (int j = i; j < intArray.Length; j++)
-                {
-                    if (intArray[j] > intArray[indx])
-                    {
-                        indx = j;
-                    }
-                }
-                if (intArray[indx] == intArray[i])
-                    continue;
-
-                int temp = intArray[i];
-                intArray[i] = intArray[indx];
-                intArray[indx] = temp;
-            }
-        }
-        static int[] SV1(int[] a, int[] b)
-        {
-            int[] c = new int[a.Length + b.Length];
-            for (int i = 0; i < a.Length; i++)
-                c[i] = a[i];
-            for (int i = a.Length; i < a.Length + b.Length; i++)
-                c[i] = b[i - a.Length];
-            return c;
-        }
         static void Main(string[] args)
         {
-            //1
-            int[] a = new int[5] { 6, 7, 8, 1, 4 };
-            int[] b = new int[5] { 7, 2, 5, -5, 2 };
-            POP1(a);
-            SIS1(b);
-            int[] c = SV1(a, b);
+            //ParseExact
+            string date = "05112022";
+            DateTime dt = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
 
-            foreach (int i in c)
-                Console.Write($"{i} ");
-            //2
-            Console.WriteLine("Введите число n: ");
+            //Parse
+            int a = int.Parse("230");
+            double b = double.Parse("238,569");
+            decimal c = decimal.Parse("124,457");
+            byte d = byte.Parse("4");
+            Console.WriteLine($"a={a} b={b} c={c} d={d}");
 
-            int n = Convert.ToInt32(Console.ReadLine());
-            int result;
+            //TryParse
+            Console.WriteLine("Введите строку:");
+            string input = Console.ReadLine();
 
-            if (n > 123)
-                result = (n - 123) *3;
+            bool result = int.TryParse(input, out var number);
+            if (result == true)
+                Console.WriteLine($"Преобразование прошло успешно. Число: {number}");
             else
-                result = 123 - n;
-            Console.WriteLine(result);
+                Console.WriteLine("Преобразование завершилось неудачно");
+            CultureInfo enUS = new CultureInfo("en-US");
+            string dateString;
+            DateTime dateValue;
+
+            //TryParseExact
+            dateString = " 5/01/2009 8:30 AM";
+            if (DateTime.TryParseExact(dateString, "g", enUS,
+            DateTimeStyles.None, out dateValue))
+                Console.WriteLine("Converted '{0}' to {1} ({2}).", dateString, dateValue,
+                dateValue.Kind);
+            else
+                Console.WriteLine("'{0}' не приемлемый формат.", dateString);
         }
+
     }
 }
+
